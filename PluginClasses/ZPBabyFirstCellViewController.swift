@@ -62,7 +62,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
             }
             
             // Replace the lock asset by a new play button asset
-            if self.itemLockedImageView.isHidden == true {
+            if self.itemLockedImageView.isHidden == true && !self.shouldPreventUserInteraction() {
                 self.itemLockedImageView.isHidden = false
                 ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
                                                                                  attributeKey: "cell_play_btn",
@@ -74,16 +74,28 @@ class ZPBabyFirstCellViewController : CACellViewController {
             }
         }
         if self.shouldPreventUserInteraction() {
+            self.removeCellButtons()
+            self.removeFreeLockIcons()
             addHidingView()
         }
     }
     
     func populateFeed(with atomFeed: APAtomFeed) {
-        self.itemLockedImageView?.isHidden = true
-        self.inAppRibbonImageView?.isHidden = true
+        self.removeFreeLockIcons()
         if self.shouldPreventUserInteraction() {
+            self.removeCellButtons()
             self.addHidingView()
         }
+    }
+    
+    func removeFreeLockIcons() {
+        self.itemLockedImageView?.isHidden = true
+        self.inAppRibbonImageView?.isHidden = true
+    }
+    
+    func removeCellButtons() {
+        self.favoritesButton?.isHidden = true
+        self.downloadButton?.isHidden = true
     }
     
     func shouldPreventUserInteraction() -> Bool {
