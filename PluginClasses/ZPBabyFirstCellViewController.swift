@@ -44,12 +44,12 @@ class ZPBabyFirstCellViewController : CACellViewController {
     
     //populates an atomEntry with extensions' parameters
     func populateEntry(with atomEntry: APAtomEntry) {
-        
-        if atomEntry.entryType == .video {
+        let type = atomEntry.entryType
+        if type == .video {
             // Hide play button
             if  let imageViewCollection = self.imageViewCollection {
                 for image in imageViewCollection {
-                    if let tmpImage = image as? APImageView {
+                    if let tmpImage = image as? APImageView, let componentModel = componentModel {
                         ZAAppConnector.sharedInstance().componentsDelegate.customization(for: tmpImage,
                                                                                          attributeKey: "",
                                                                                          attributesDictionary: ["image_name" : ""],
@@ -62,7 +62,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
             }
             
             // Replace the lock asset by a new play button asset
-            if self.itemLockedImageView.isHidden == true && !self.shouldPreventUserInteraction() {
+            if self.itemLockedImageView.isHidden == true && !self.shouldPreventUserInteraction(for: atomEntry), let componentModel = componentModel {
                 self.itemLockedImageView.isHidden = false
                 ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
                                                                                  attributeKey: "cell_play_btn",
@@ -72,8 +72,10 @@ class ZPBabyFirstCellViewController : CACellViewController {
                                                                                  componentDataSourceModel: componentDataSourceModel,
                                                                                  componentState: .normal)
             }
+        } else if type == .link {
+            self.removeFreeLockIcons()
         }
-        if self.shouldPreventUserInteraction() {
+        if self.shouldPreventUserInteraction(for: atomEntry) {
             self.removeCellButtons()
             self.removeFreeLockIcons()
             addHidingView()
@@ -82,10 +84,15 @@ class ZPBabyFirstCellViewController : CACellViewController {
     
     func populateFeed(with atomFeed: APAtomFeed) {
         self.removeFreeLockIcons()
-        if self.shouldPreventUserInteraction() {
+        if self.shouldPreventUserInteraction(for: atomFeed) {
             self.removeCellButtons()
             self.addHidingView()
         }
+    }
+    
+    override func prepareComponentForReuse() {
+        super.prepareComponentForReuse()
+        self.updateUI()
     }
     
     func removeFreeLockIcons() {
@@ -98,14 +105,17 @@ class ZPBabyFirstCellViewController : CACellViewController {
         self.downloadButton?.isHidden = true
     }
     
-    func shouldPreventUserInteraction() -> Bool {
+    func shouldPreventUserInteraction(for atomEntry:APAtomEntry) -> Bool {
         var retVal = false;
         let unclickableKey = "unClickable"
-        if let atomFeed = self.atomFeed {
-            retVal = atomFeed.pipesObject["summary"] as? String == unclickableKey || atomFeed.pipesObject["ui_tag"] as? String == unclickableKey || atomFeed.title == unclickableKey
-        } else if let atomEntry = self.atomEntry {
-            retVal = atomEntry.title == unclickableKey || atomEntry.summary == unclickableKey || atomEntry.pipesObject["ui_tag"] as? String == unclickableKey
-        }
+        retVal = atomEntry.title == unclickableKey || atomEntry.summary == unclickableKey || atomEntry.pipesObject["ui_tag"] as? String == unclickableKey
+        return retVal
+    }
+    
+    func shouldPreventUserInteraction(for atomFeed:APAtomFeed) -> Bool {
+        var retVal = false;
+        let unclickableKey = "unClickable"
+        retVal = atomFeed.pipesObject["summary"] as? String == unclickableKey || atomFeed.pipesObject["ui_tag"] as? String == unclickableKey || atomFeed.title == unclickableKey
         return retVal
     }
     
