@@ -75,6 +75,12 @@ class ZPBabyFirstCellViewController : CACellViewController {
         } else if type == .link {
             self.removeFreeLockIcons()
         }
+        if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
+            if let downloadButtonContainerView = self.downloadButtonContainerView,
+                !downloadButtonContainerView.isHidden {
+                downloadButtonContainerView.isUserInteractionEnabled = (atomVideoEntry.isFree() || APApplicasterController.sharedInstance()?.endUserProfile.subscriptionExpirationDate() != nil)
+            }
+        }
         if self.shouldPreventUserInteraction(for: atomEntry) {
             self.removeCellButtons()
             self.removeFreeLockIcons()
