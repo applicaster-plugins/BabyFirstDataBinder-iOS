@@ -26,6 +26,8 @@ class ZPBabyFirstCellViewController : CACellViewController {
     
     override func updateUI() {
         super.updateUI()
+        //remove the imageViewCollection
+        hideImageViewCollection()
         if let atomEntry = self.atomEntry {
             self.populateEntry(with: atomEntry)
         } else if let atomFeed = self.atomFeed {
@@ -42,31 +44,42 @@ class ZPBabyFirstCellViewController : CACellViewController {
     
     //MARK: private
     
+    func hideImageViewCollection() {
+        if let imageViewCollection = self.imageViewCollection {
+            for image in imageViewCollection {
+                if let image  = image as? UIImageView {
+                    image.isHidden = true
+                }
+            }
+        }
+    }
+    
+    func isLockIconHidden(atomEntry: APAtomEntry) -> Bool {
+        if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
+            return (atomVideoEntry.isFree() || self.isSubscribed())
+        } else {
+            return true
+        }
+    }
+    
     //populates an atomEntry with extensions' parameters
     func populateEntry(with atomEntry: APAtomEntry) {
         let type = atomEntry.entryType
         if type == .video {
-            // Hide play button
-            if  let imageViewCollection = self.imageViewCollection {
-                for image in imageViewCollection {
-                    if let tmpImage = image as? APImageView, let componentModel = componentModel {
-                        ZAAppConnector.sharedInstance().componentsDelegate.customization(for: tmpImage,
-                                                                                         attributeKey: "",
-                                                                                         attributesDictionary: ["image_name" : ""],
-                                                                                         defaultAttributesDictionary: nil,
-                                                                                         componentModel: componentModel,
-                                                                                         componentDataSourceModel: componentDataSourceModel,
-                                                                                         componentState: .normal)
-                    }
-                }
-            }
-            
             // Replace the lock asset by a new play button asset
-            if self.itemLockedImageView.isHidden == true && !self.shouldPreventUserInteraction(for: atomEntry), let componentModel = componentModel {
-                self.itemLockedImageView.isHidden = false
+            self.itemLockedImageView.isHidden = false
+            if isLockIconHidden(atomEntry: atomEntry) == true && !self.shouldPreventUserInteraction(for: atomEntry), let componentModel = componentModel {
                 ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
-                                                                                 attributeKey: "cell_play_btn",
-                                                                                 attributesDictionary: ["image_name" : "cell_play_btn"],
+                                                                                 attributeKey: "special_image_2",
+                                                                                 attributesDictionary: ["image_name" : "special_image_2"],
+                                                                                 defaultAttributesDictionary: nil,
+                                                                                 componentModel: componentModel,
+                                                                                 componentDataSourceModel: componentDataSourceModel,
+                                                                                 componentState: .normal)
+            } else if let componentModel = componentModel {
+                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
+                                                                                 attributeKey: "item_locked_image_view",
+                                                                                 attributesDictionary: ["image_name" : "item_locked_image_view"],
                                                                                  defaultAttributesDictionary: nil,
                                                                                  componentModel: componentModel,
                                                                                  componentDataSourceModel: componentDataSourceModel,
@@ -74,6 +87,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
             }
         } else if type == .link {
             self.removeFreeLockIcons()
+            self.removeCellButtons()
         }
         if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
             if let downloadButtonContainerView = self.downloadButtonContainerView,
@@ -147,9 +161,10 @@ class ZPBabyFirstCellViewController : CACellViewController {
         if let tokens = APAuthorizationManager.sharedInstance().authorizationTokens() as? [String : AnyObject] {
             authorizationTokens = tokens
         }
-        
-        if subscriptionExpirationDate != nil || authorizationTokens != nil {
-            retVal = true
+        if let count = authorizationTokens?.count {
+            if subscriptionExpirationDate != nil || (count > 0) {
+                retVal = true
+            }
         }
         
         return retVal
