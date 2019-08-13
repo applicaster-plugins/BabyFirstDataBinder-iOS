@@ -8,7 +8,8 @@ source 'git@github.com:applicaster/PluginsBuilderCocoaPods.git'
 source 'git@github.com:CocoaPods/Specs.git'
 
 def shared_pods
-
+  pod 'ZappPlugins'
+  pod 'ApplicasterSDK'
 end
 
 target 'BabyFirstDataBinder' do
@@ -24,7 +25,7 @@ end
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
-            config.build_settings['SWIFT_VERSION'] = '4.1'
+            config.build_settings['SWIFT_VERSION'] = '5.0'
         end
     end
 end

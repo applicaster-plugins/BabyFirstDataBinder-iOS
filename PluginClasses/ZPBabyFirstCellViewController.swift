@@ -65,11 +65,11 @@ class ZPBabyFirstCellViewController : CACellViewController {
     //populates an atomEntry with extensions' parameters
     func populateEntry(with atomEntry: APAtomEntry) {
         let type = atomEntry.entryType
-        if type == .video {
+        if let itemLockedImageView = self.itemLockedImageView, type == .video {
             // Replace the lock asset by a new play button asset
-            self.itemLockedImageView.isHidden = false
+            itemLockedImageView.isHidden = false
             if isLockIconHidden(atomEntry: atomEntry) == true && !self.shouldPreventUserInteraction(for: atomEntry), let componentModel = componentModel {
-                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
+                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
                                                                                  attributeKey: "special_image_2",
                                                                                  attributesDictionary: ["image_name" : "special_image_2"],
                                                                                  defaultAttributesDictionary: nil,
@@ -77,7 +77,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
                                                                                  componentDataSourceModel: componentDataSourceModel,
                                                                                  componentState: .normal)
             } else if let componentModel = componentModel {
-                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: self.itemLockedImageView,
+                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
                                                                                  attributeKey: "item_locked_image_view",
                                                                                  attributesDictionary: ["image_name" : "item_locked_image_view"],
                                                                                  defaultAttributesDictionary: nil,
