@@ -92,7 +92,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
         if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
             if let downloadButtonContainerView = self.downloadButtonContainerView,
                 !downloadButtonContainerView.isHidden {
-                downloadButtonContainerView.isUserInteractionEnabled = (atomVideoEntry.isFree() || APApplicasterController.sharedInstance()?.endUserProfile.subscriptionExpirationDate() != nil)
+                downloadButtonContainerView.isUserInteractionEnabled = (atomVideoEntry.isFree() || self.isSubscribed())
             }
         }
         if self.shouldPreventUserInteraction(for: atomEntry) {
