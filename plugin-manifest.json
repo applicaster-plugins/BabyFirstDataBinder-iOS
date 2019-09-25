@@ -1,31 +1,36 @@
 {
-	"api": {
-		"require_startup_execution": false,
-		"class_name": "ZPDataBinderBabyFirst",
-		"modules": [
-			"BabyFirstDataBinder"
-		]
-	},
-	"dependency_repository_url": [
-		"git@github.com:applicaster-plugins/BabyFirstDataBinder-iOS.git"
-	],
-	"platform": "ios",
-	"author_name": "Miri Vecselboim",
-	"author_email": "m.vecselboim@applicaster.com",
-	"manifest_version": "2.1.0",
-	"name": "BabyFirst Data Binder",
-	"description": "Data binder For BabyFirst",
-	"type": "general",
-	"identifier": "BabyFirstDataBinder",
-	"ui_builder_support": true,
-	"dependency_name": "ZappaDataBinder",
-	"dependency_version": "2.1.0",
-	"whitelisted_account_ids": [
-		"5a450b3d41442c000b0195d5"
-	],
-	"min_zapp_sdk": "12.0.0-Dev",
-	"deprecated_since_zapp_sdk": "",
-	"unsupported_since_zapp_sdk": "",
-	"react_native": false,
-	"custom_configuration_fields": []
+    "api": {
+        "require_startup_execution": false,
+        "class_name": "ZPDataBinderBabyFirst",
+        "modules": [
+            "BabyFirstDataBinder"
+        ]
+    },
+    "dependency_repository_url": [
+        "git@github.com:applicaster-plugins/BabyFirstDataBinder-iOS.git"
+    ],
+    "platform": "ios",
+    "author_name": "Roi Kedarya",
+    "author_email": "r.kedarya@applicaster.com",
+    "manifest_version": "2.1.0",
+    "name": "BabyFirst Data Binder",
+    "description": "Data binder For BabyFirst",
+    "type": "general",
+    "identifier": "BabyFirstDataBinder",
+    "ui_builder_support": true,
+    "dependency_name": "BabyFirstDataBinder",
+    "dependency_version": "2.1.0",
+    "whitelisted_account_ids": [
+        "5cc6f5d65d639a000cf17876",
+        "5a450b3d41442c000b0195d5",
+        "5c501e6186c6b1000c312807"
+    ],
+    "min_zapp_sdk": "12.0.0-Dev",
+    "deprecated_since_zapp_sdk": "",
+    "unsupported_since_zapp_sdk": "",
+    "react_native": false,
+    "custom_configuration_fields": [],
+    "targets": [
+        "mobile"
+    ]
 }
