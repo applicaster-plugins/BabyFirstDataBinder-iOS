@@ -90,9 +90,9 @@ class ZPBabyFirstCellViewController : CACellViewController {
             self.removeCellButtons()
         }
         if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
-            if let downloadButtonContainerView = self.downloadButtonContainerView,
-                !downloadButtonContainerView.isHidden {
-                downloadButtonContainerView.isUserInteractionEnabled = (atomVideoEntry.isFree() || self.isSubscribed())
+            if let hqmeButtonContainerView = self.hqmeButtonContainerView,
+                !hqmeButtonContainerView.isHidden {
+                hqmeButtonContainerView.isUserInteractionEnabled = (atomVideoEntry.isFree() || self.isSubscribed())
             }
         }
         if self.shouldPreventUserInteraction(for: atomEntry) {
@@ -122,7 +122,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
     
     func removeCellButtons() {
         self.favoritesButton?.isHidden = true
-        self.downloadButton?.isHidden = true
+        self.hqmeButtonContainerView?.isHidden = true
     }
     
     func shouldPreventUserInteraction(for atomEntry:APAtomEntry) -> Bool {
