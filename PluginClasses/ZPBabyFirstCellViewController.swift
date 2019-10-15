@@ -20,6 +20,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
     override func displayAtomEntry(_ entry: NSObject) {
         if let entry = entry as? APAtomEntry {
             self.atomEntry = entry
+            self.atomFeed = nil
         }
         super.displayAtomEntry(entry)
     }
@@ -38,6 +39,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
     override func displayAtomFeed(_ atomFeed: NSObject!) {
         if let atomFeed = atomFeed as? APAtomFeed {
             self.atomFeed = atomFeed
+            self.atomEntry = nil
         }
         super.displayAtomFeed(atomFeed)
     }
@@ -68,22 +70,24 @@ class ZPBabyFirstCellViewController : CACellViewController {
         if let itemLockedImageView = self.itemLockedImageView, type == .video {
             // Replace the lock asset by a new play button asset
             itemLockedImageView.isHidden = false
-            if isLockIconHidden(atomEntry: atomEntry) == true && !self.shouldPreventUserInteraction(for: atomEntry), let componentModel = componentModel {
-                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
-                                                                                 attributeKey: "special_image_2",
-                                                                                 attributesDictionary: ["image_name" : "special_image_2"],
-                                                                                 defaultAttributesDictionary: nil,
-                                                                                 componentModel: componentModel,
-                                                                                 componentDataSourceModel: componentDataSourceModel,
-                                                                                 componentState: .normal)
-            } else if let componentModel = componentModel {
-                ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
-                                                                                 attributeKey: "item_locked_image_view",
-                                                                                 attributesDictionary: ["image_name" : "item_locked_image_view"],
-                                                                                 defaultAttributesDictionary: nil,
-                                                                                 componentModel: componentModel,
-                                                                                 componentDataSourceModel: componentDataSourceModel,
-                                                                                 componentState: .normal)
+            if let componentModel = componentModel {
+                if isLockIconHidden(atomEntry: atomEntry) == true && !self.shouldPreventUserInteraction(for: atomEntry) {
+                    ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
+                                                                                     attributeKey: "special_image_2",
+                                                                                     attributesDictionary: ["image_name" : "special_image_2"],
+                                                                                     defaultAttributesDictionary: nil,
+                                                                                     componentModel: componentModel,
+                                                                                     componentDataSourceModel: componentDataSourceModel,
+                                                                                     componentState: .normal)
+                } else {
+                    ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
+                                                                                     attributeKey: "item_locked_image_view",
+                                                                                     attributesDictionary: ["image_name" : "item_locked_image_view"],
+                                                                                     defaultAttributesDictionary: nil,
+                                                                                     componentModel: componentModel,
+                                                                                     componentDataSourceModel: componentDataSourceModel,
+                                                                                     componentState: .normal)
+                }
             }
         } else if type == .link {
             self.removeFreeLockIcons()
