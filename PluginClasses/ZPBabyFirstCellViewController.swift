@@ -102,7 +102,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
         if self.shouldPreventUserInteraction(for: atomEntry) {
             self.removeCellButtons()
             self.removeFreeLockIcons()
-            addHidingView()
+            //addHidingView()
         }
     }
     
@@ -110,7 +110,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
         self.removeFreeLockIcons()
         if self.shouldPreventUserInteraction(for: atomFeed) {
             self.removeCellButtons()
-            self.addHidingView()
+            //self.addHidingView()
         }
     }
     

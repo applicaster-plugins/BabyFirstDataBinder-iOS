@@ -12,7 +12,7 @@
     "platform": "ios",
     "author_name": "Roi Kedarya",
     "author_email": "r.kedarya@applicaster.com",
-    "manifest_version": "2.3.0",
+    "manifest_version": "2.4.0",
     "name": "BabyFirst Data Binder",
     "description": "Data binder For BabyFirst",
     "type": "general",
