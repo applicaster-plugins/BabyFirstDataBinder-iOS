@@ -56,6 +56,14 @@ class ZPBabyFirstCellViewController : CACellViewController {
         }
     }
     
+    func isFreeItem(atomEntry: APAtomEntry) -> Bool {
+        if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
+            return atomVideoEntry.isFree()
+        }else{
+            return false
+        }
+    }
+    
     func isLockIconHidden(atomEntry: APAtomEntry) -> Bool {
         if let atomVideoEntry = atomEntry as? APAtomVideoEntry {
             return (atomVideoEntry.isFree() || self.isSubscribed())
@@ -71,6 +79,19 @@ class ZPBabyFirstCellViewController : CACellViewController {
             // Replace the lock asset by a new play button asset
             itemLockedImageView.isHidden = false
             if let componentModel = componentModel {
+                if(isFreeItem(atomEntry: atomEntry)){
+                    if let inAppRibbonImageView = inAppRibbonImageView{
+                        inAppRibbonImageView.isHidden = false
+                        ZAAppConnector.sharedInstance().componentsDelegate.customization(for: inAppRibbonImageView,
+                                                                                         attributeKey: "inapp_ribbon_image",
+                                                                                         attributesDictionary: ["image_name" : "inapp_ribbon_image"],
+                                                                                         defaultAttributesDictionary: nil,
+                                                                                         componentModel: componentModel,
+                                                                                         componentDataSourceModel: componentDataSourceModel,
+                                                                                         componentState: .normal)
+                    }
+                }
+                
                 if isLockIconHidden(atomEntry: atomEntry) == true && !self.shouldPreventUserInteraction(for: atomEntry) {
                     ZAAppConnector.sharedInstance().componentsDelegate.customization(for: itemLockedImageView,
                                                                                      attributeKey: "special_image_2",
