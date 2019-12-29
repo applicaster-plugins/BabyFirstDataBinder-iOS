@@ -76,6 +76,7 @@ class ZPBabyFirstCellViewController : CACellViewController {
     func populateEntry(with atomEntry: APAtomEntry) {
         let type = atomEntry.entryType
         if let itemLockedImageView = self.itemLockedImageView, type == .video {
+            atomEntry.extensions["open_with_plugin_id"] = "baby_player_plugin"
             // Replace the lock asset by a new play button asset
             itemLockedImageView.isHidden = false
             if let componentModel = componentModel {
